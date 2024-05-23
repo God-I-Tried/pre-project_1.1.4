@@ -62,15 +62,7 @@ public class User {
 
     @Override
     public String toString() {
-        return new StringBuilder("User ")
-                .append(id)
-                .append(" {name: ")
-                .append(name)
-                .append(", lastname: ")
-                .append(lastName)
-                .append(", age: ")
-                .append(age)
-                .append("}")
-                .toString();
+        return String.format("User %d {name: %s, lastname: %s, age: %d}",
+                id, name, lastName, age);
     }
 }
