@@ -11,17 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private Connection connection = Util.getConnection();
+    private final static String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (id BIGINT not NULL AUTO_INCREMENT, name VARCHAR (20), lastName VARCHAR (20), age TINYINT not NULL, PRIMARY KEY (id))";
+    private final static String DROPS_USER_TABLE = "DROP TABLE IF EXISTS users";
+    private final static String SAVE_USER = "INSERT users (name, lastName, age) VALUES ('%s', '%s', '%d')";
+    private final static String REMOVE_USER_BY_ID = "DELETE FROM users WHERE id = '%d';";
+    private final static String GET_ALL_USERS = "SELECT * FROM users";
+    private final static String CLEAN_USERS_TABLE = "TRUNCATE TABLE users";
+    private final static Connection CONNECTION = Util.getConnection();
     public UserDaoJDBCImpl() {
 
     }
 
     public void createUsersTable() {
-        String createUserTable = String.format("%s %s %s",
-                "CREATE TABLE IF NOT EXISTS users ",
-                "(id BIGINT not NULL AUTO_INCREMENT, name VARCHAR (20), ",
-                "lastName VARCHAR (20), age TINYINT not NULL, PRIMARY KEY (id))");
-        try (PreparedStatement statement = connection.prepareStatement(createUserTable)) {
+        try (PreparedStatement statement = CONNECTION.prepareStatement(CREATE_USER_TABLE)) {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -29,8 +31,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        String dropUsersTable = "DROP TABLE IF EXISTS users";
-        try (PreparedStatement statement = connection.prepareStatement(dropUsersTable)) {
+        try (PreparedStatement statement = CONNECTION.prepareStatement(DROPS_USER_TABLE)) {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -38,9 +39,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String saveUser = String.format("INSERT users (name, lastName, age) VALUES ('%s', '%s', '%d')",
-                name, lastName, age);
-        try (PreparedStatement statement = connection.prepareStatement(saveUser)) {
+        try (PreparedStatement statement = CONNECTION.prepareStatement(String.format(SAVE_USER,
+                name, lastName, age))) {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,8 +48,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-        String removeUserById = String.format("DELETE FROM users WHERE id = '%d';", id);
-        try (PreparedStatement statement = connection.prepareStatement(removeUserById.toString())) {
+        try (PreparedStatement statement = CONNECTION.prepareStatement(String.format(REMOVE_USER_BY_ID, id))) {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,8 +57,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        String getAllUsers = "SELECT * FROM users";
-        try (PreparedStatement statement = connection.prepareStatement(getAllUsers);) {
+        try (PreparedStatement statement = CONNECTION.prepareStatement(GET_ALL_USERS)) {
             ResultSet resulSet = statement.executeQuery();
             while (resulSet.next()) {
                 User user = new User();
@@ -76,8 +74,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        String cleanUsersTable = "TRUNCATE TABLE users";
-        try (PreparedStatement statement = connection.prepareStatement(cleanUsersTable)) {
+        try (PreparedStatement statement = CONNECTION.prepareStatement(CLEAN_USERS_TABLE)) {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
