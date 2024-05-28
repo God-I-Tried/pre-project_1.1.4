@@ -18,6 +18,7 @@ public class UserDaoJDBCImpl implements UserDao {
     private final static String GET_ALL_USERS = "SELECT * FROM users";
     private final static String CLEAN_USERS_TABLE = "TRUNCATE TABLE users";
     private final static Connection CONNECTION = Util.getConnection();
+
     public UserDaoJDBCImpl() {
 
     }
