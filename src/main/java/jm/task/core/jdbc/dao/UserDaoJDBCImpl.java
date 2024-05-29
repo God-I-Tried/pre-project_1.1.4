@@ -13,8 +13,8 @@ import java.util.List;
 public class UserDaoJDBCImpl implements UserDao {
     private final static String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (id BIGINT not NULL AUTO_INCREMENT, name VARCHAR (20), lastName VARCHAR (20), age TINYINT not NULL, PRIMARY KEY (id))";
     private final static String DROPS_USER_TABLE = "DROP TABLE IF EXISTS users";
-    private final static String SAVE_USER = "INSERT users (name, lastName, age) VALUES ('%s', '%s', '%d')";
-    private final static String REMOVE_USER_BY_ID = "DELETE FROM users WHERE id = '%d';";
+    private final static String SAVE_USER = "INSERT users (name, lastName, age) VALUES (\'%s\', \'%s\', \'%d\')";
+    private final static String REMOVE_USER_BY_ID = "DELETE FROM users WHERE id = \'%d\';";
     private final static String GET_ALL_USERS = "SELECT * FROM users";
     private final static String CLEAN_USERS_TABLE = "TRUNCATE TABLE users";
     private final static Connection CONNECTION = Util.getConnection();
