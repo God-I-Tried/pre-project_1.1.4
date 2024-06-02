@@ -4,38 +4,36 @@ import jm.task.core.jdbc.dao.UserDao;
 import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
+
 import java.util.List;
-import java.sql.SQLException;
 
 
 public class UserServiceImpl implements UserService {
-    //private final UserDao user = new UserDaoJDBCImpl();
-    private final UserDao user = new UserDaoHibernateImpl();
+
+    //private UserDao userDao = new UserDaoJDBCImpl();
+    private final UserDao userDao = new UserDaoHibernateImpl();
+
     public void createUsersTable() {
-        try {
-            user.createUsersTable();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        userDao.createUsersTable();
     }
 
     public void dropUsersTable() {
-        user.dropUsersTable();
+        userDao.dropUsersTable();
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        user.saveUser(name, lastName, age);
+        userDao.saveUser(name, lastName, age);
     }
 
     public void removeUserById(long id) {
-        user.removeUserById(id);
+        userDao.removeUserById(id);
     }
 
     public List<User> getAllUsers() {
-        return user.getAllUsers();
+        return userDao.getAllUsers();
     }
 
     public void cleanUsersTable() {
-        user.cleanUsersTable();
+        userDao.cleanUsersTable();
     }
 }

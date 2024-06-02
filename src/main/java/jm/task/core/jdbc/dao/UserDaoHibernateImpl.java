@@ -7,65 +7,56 @@ import org.hibernate.Session;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
+    private final static String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (id BIGINT not NULL AUTO_INCREMENT, name VARCHAR (20), lastName VARCHAR (20), age TINYINT not NULL, PRIMARY KEY (id))";
+    private final static String DROPS_USER_TABLE = "DROP TABLE IF EXISTS users";
+    private final static String CLEAN_USERS_TABLE = "TRUNCATE TABLE users";
+
     public UserDaoHibernateImpl() {
 
     }
 
-
     @Override
     public void createUsersTable() {
-        String createUserTable = String.format("%s %s %s",
-                "CREATE TABLE IF NOT EXISTS users (id BIGINT not NULL AUTO_INCREMENT, ",
-                "name VARCHAR (20), lastName VARCHAR (20), ",
-                " age TINYINT not NULL, PRIMARY KEY (id))");
         try (Session session = Util.getSession()) {
             session.beginTransaction();
-            session.createSQLQuery(createUserTable).executeUpdate();
+            session.createSQLQuery(CREATE_USER_TABLE).executeUpdate();
         }
     }
 
     @Override
     public void dropUsersTable() {
-        String dropUsersTable = "DROP TABLE IF EXISTS users";
         try (Session session = Util.getSession()) {
             session.beginTransaction();
-            session.createSQLQuery(dropUsersTable).executeUpdate();
+            session.createSQLQuery(DROPS_USER_TABLE).executeUpdate();
         }
     }
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
         try (Session session = Util.getSession()) {
-            User user = new User(name, lastName, age);
-            session.beginTransaction();
-            session.save(user);
+            session.save(new User(name, lastName, age));
         }
     }
 
     @Override
     public void removeUserById(long id) {
         try (Session session = Util.getSession()) {
-            User user = session.get(User.class, id);
-            session.beginTransaction();
-            session.delete(user);
+            session.delete(session.get(User.class, id));
         }
     }
 
     @Override
     public List<User> getAllUsers() {
         try (Session session = Util.getSession()) {
-            session.beginTransaction();
-            List<User> users = session.createQuery("from User").getResultList();
-            return users;
+            return session.createQuery("from User").getResultList();
         }
     }
 
     @Override
     public void cleanUsersTable() {
-        String cleanUsersTable = "TRUNCATE TABLE users";
         try (Session session = Util.getSession()) {
             session.beginTransaction();
-            session.createSQLQuery(cleanUsersTable).executeUpdate();
+            session.createSQLQuery(CLEAN_USERS_TABLE).executeUpdate();
         }
     }
 }

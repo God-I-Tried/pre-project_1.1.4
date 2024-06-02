@@ -11,15 +11,14 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class Util {
-    private static final String url = "jdbc:mysql://localhost/13";
-    private static final String username = "root";
-    private static final String password = "12345678";
+    private static final String URL = "jdbc:mysql://localhost/123";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "12345678";
 
-    private static SessionFactory sessionFactory = null;
     public static Connection getConnection() {
         Connection connection = null;
         try {
-            connection = DriverManager.getConnection(url, username, password);
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -28,13 +27,13 @@ public class Util {
 
     public static Session getSession() {
         try {
-            Properties prop = new Properties();
-            prop.setProperty("hibernate.connection.url", "jdbc:mysql://localhost/13");
-            prop.setProperty("hibernate.connection.username", "root");
-            prop.setProperty("hibernate.connection.password", "12345678");
+            Properties properties = new Properties();
+            properties.setProperty("hibernate.connection.url", URL);
+            properties.setProperty("hibernate.connection.username", USERNAME);
+            properties.setProperty("hibernate.connection.password", PASSWORD);
 
-            sessionFactory = new Configuration()
-                    .addProperties(prop)
+            SessionFactory sessionFactory = new Configuration()
+                    .addProperties(properties)
                     .addAnnotatedClass(User.class)
                     .buildSessionFactory();
             return sessionFactory.openSession();
