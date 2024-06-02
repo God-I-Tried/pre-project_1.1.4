@@ -17,7 +17,7 @@ public class UserDaoJDBCImpl implements UserDao {
     private final static String REMOVE_USER_BY_ID = "DELETE FROM users WHERE id = ?;";
     private final static String GET_ALL_USERS = "SELECT * FROM users";
     private final static String CLEAN_USERS_TABLE = "TRUNCATE TABLE users";
-    private final static Connection CONNECTION = Util.getConnection();
+    private final static Connection CONNECTION = new Util().getConnection();
 
     public UserDaoJDBCImpl() {
 

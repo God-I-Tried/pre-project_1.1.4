@@ -17,7 +17,7 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
-        try (Session session = Util.getSession()) {
+        try (Session session = new Util().getSession()) {
             session.beginTransaction();
             session.createSQLQuery(CREATE_USER_TABLE).executeUpdate();
         }
@@ -25,7 +25,7 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void dropUsersTable() {
-        try (Session session = Util.getSession()) {
+        try (Session session = new Util().getSession()) {
             session.beginTransaction();
             session.createSQLQuery(DROPS_USER_TABLE).executeUpdate();
         }
@@ -33,28 +33,28 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-        try (Session session = Util.getSession()) {
+        try (Session session = new Util().getSession()) {
             session.save(new User(name, lastName, age));
         }
     }
 
     @Override
     public void removeUserById(long id) {
-        try (Session session = Util.getSession()) {
+        try (Session session = new Util().getSession()) {
             session.delete(session.get(User.class, id));
         }
     }
 
     @Override
     public List<User> getAllUsers() {
-        try (Session session = Util.getSession()) {
+        try (Session session = new Util().getSession()) {
             return session.createQuery("from User").getResultList();
         }
     }
 
     @Override
     public void cleanUsersTable() {
-        try (Session session = Util.getSession()) {
+        try (Session session = new Util().getSession()) {
             session.beginTransaction();
             session.createSQLQuery(CLEAN_USERS_TABLE).executeUpdate();
         }

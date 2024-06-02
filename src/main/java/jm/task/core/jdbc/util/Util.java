@@ -15,7 +15,7 @@ public class Util {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "12345678";
 
-    public static Connection getConnection() {
+    public Connection getConnection() {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -25,7 +25,7 @@ public class Util {
         return connection;
     }
 
-    public static Session getSession() {
+    public Session getSession() {
         try {
             Properties properties = new Properties();
             properties.setProperty("hibernate.connection.url", URL);
