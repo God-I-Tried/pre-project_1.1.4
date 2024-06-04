@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class Util {
-    private static final String URL = "jdbc:mysql://localhost/123";
+    private static final String URL = "jdbc:mysql://localhost/13";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "12345678";
 
@@ -25,7 +25,7 @@ public class Util {
         return connection;
     }
 
-    public Session getSession() {
+    public SessionFactory getSessionFactory() {
         try {
             Properties properties = new Properties();
             properties.setProperty("hibernate.connection.url", URL);
@@ -36,7 +36,7 @@ public class Util {
                     .addProperties(properties)
                     .addAnnotatedClass(User.class)
                     .buildSessionFactory();
-            return sessionFactory.openSession();
+            return sessionFactory;
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }
